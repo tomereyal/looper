@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 // import "./Slider.module.css";
 // import "./Thumb.module.css";
 import styled from "styled-components";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectPercentage } from "./timeControllerSlice";
 
 const PROGRESS_BAR_HEIGHT = "4px";
 const THUMB_WIDTH = "20px";
@@ -83,7 +85,10 @@ interface ISlider {
   onChange?: any;
 }
 
-export default function Slider({ percentage = 0, onChange }: ISlider) {
+export default function TimeController({ percentage = 0, onChange }: ISlider) {
+    const count = useAppSelector(selectPercentage);
+    const dispatch = useAppDispatch();
+
   const [position, setPosition] = useState(0);
   const [marginLeft, setMarginLeft] = useState(0);
   const [progressBarWidth, setProgressBarWidth] = useState(0);
