@@ -1,10 +1,17 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { loop, selectIsLooped, selectIsPlaying } from "./playControllersSlice";
+import {
+  loop,
+  selectIsDone,
+  selectIsLooped,
+  selectIsPaused,
+  selectIsPlaying,
+} from "./playControllersSlice";
 import { play, pause, stop } from "./playControllersSlice";
 import {
   ButtonContainer,
   Container,
+  InnerContainer,
   LoopButton,
   PauseButton,
   PlayButton,
@@ -14,6 +21,7 @@ import {
 export default function PlayControllers() {
   const isPlaying = useAppSelector(selectIsPlaying);
   const isLooped = useAppSelector(selectIsLooped);
+  const isDone = useAppSelector(selectIsDone);
   const dispatch = useAppDispatch();
 
   const handlePlay = () => {
@@ -31,8 +39,8 @@ export default function PlayControllers() {
 
   return (
     <Container>
-      <ButtonContainer>
-        {isPlaying ? (
+      <InnerContainer>
+        {isPlaying && !isDone ? (
           <PauseButton onClick={handlePause}></PauseButton>
         ) : (
           <PlayButton onClick={handlePlay}></PlayButton>
@@ -41,7 +49,7 @@ export default function PlayControllers() {
         <LoopButton onClick={handleLoop} isLooped={isLooped}>
           &#8634;
         </LoopButton>
-      </ButtonContainer>
+      </InnerContainer>
     </Container>
   );
 }

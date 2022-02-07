@@ -1,6 +1,7 @@
 import { CONFIG } from "./../../app-config/index";
 import styled from "styled-components";
 import tw from "twin.macro";
+
 export const Container = styled.div`
   display: flex;
 `;
@@ -9,7 +10,6 @@ export const AudioContainer = styled.div`
   width: 100%;
 `;
 export const ControlPanelContainer = styled.div`
-  /* width: 35%; */
   display: flex;
   justify-content: center;
   align-items: start;
@@ -23,9 +23,26 @@ export const ControlPanelContainer = styled.div`
 
 export const AudioName = styled.div`
   ${tw`
- text-tiny
+flex
+justify-center
+items-center
+text-tiny
  md:text-base
+ text-gray-300
  `}
+`;
+
+export const GlowingBulletin = styled.div<{ color: string }>`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: ${({ color }) => color};
+  box-shadow: inset 0 0 2px 3px ${({ color }) => color},
+    /* inner white */ 0 0 5px 3px ${({ color }) => color};
+  ${tw`
+  mr-2
+  md:mr-4`}
 `;
 
 export const VolumeContainer = styled.div`
@@ -33,7 +50,6 @@ export const VolumeContainer = styled.div`
   flex
   justify-center
   items-center
-
   `}
   input {
     width: 30px;
@@ -44,10 +60,8 @@ export const MuteToggleButton = styled.a`
   height: 30px;
   width: 30px;
   position: relative;
-  /* overflow: hidden; */
   display: inline-block;
   text-align: center;
-
   cursor: pointer;
   span {
     display: block;

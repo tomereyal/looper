@@ -14,7 +14,7 @@ export const SliderContainer = styled.div`
   margin-left: 20%;
   &::before {
     content: "";
-    background-color: white;
+    background-color: #555;
     width: 99%;
     height: calc((${PROGRESS_BAR_HEIGHT}) - 1px);
     display: block;
@@ -31,8 +31,7 @@ export const ProgressBarCover = styled.div<{
   progressBarWidth: number;
   isMuted: boolean;
 }>`
-  background-color: ${({ isMuted }) =>
-    isMuted ? "#555" : "rgb(218, 55, 145)"};
+  background-color: white;
   width: 0%;
   width: ${({ progressBarWidth }) => progressBarWidth + "px"};
   height: ${PROGRESS_BAR_HEIGHT};

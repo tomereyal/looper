@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 // import "./Slider.module.css";
 // import "./Thumb.module.css";
-import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { pause, play } from "../play-controllers/playControllersSlice";
+import {
+  pause,
+  play,
+  selectIsPlaying,
+} from "../play-controllers/playControllersSlice";
 import {
   ProgressBarCover,
   Range,
@@ -17,21 +20,19 @@ import {
   setSelectedTime,
 } from "./timeControllerSlice";
 
-interface ISlider {
-  percentage?: number;
-  onChange?: any;
-}
-
-export default function TimeController({ onChange }: ISlider) {
+export default function TimeController() {
   const percentage = useAppSelector(selectPercentage);
   const duration = useAppSelector(selectDuration);
+  const isPlaying = useAppSelector(selectIsPlaying);
   const dispatch = useAppDispatch();
 
   const [position, setPosition] = useState(0);
   const [marginLeft, setMarginLeft] = useState(0);
+  const [isGonnaPlayAfter, setIsGonnaPlayAfter] = useState(false);
   const [progressBarWidth, setProgressBarWidth] = useState(0);
   const rangeRef = useRef() as React.RefObject<HTMLInputElement>;
   const thumbRef = useRef() as React.RefObject<HTMLInputElement>;
+
   useEffect(() => {
     const rangeWidth = rangeRef.current?.getBoundingClientRect().width || 0;
     const thumbWidth = thumbRef.current?.getBoundingClientRect().width || 0;
@@ -53,11 +54,15 @@ export default function TimeController({ onChange }: ISlider) {
         type="range"
         onMouseDown={() => {
           dispatch(pause());
+          setIsGonnaPlayAfter(isPlaying);
         }}
         onMouseUp={(e: any) => {
           const timeSelected = (duration / 100) * e.target.value;
           dispatch(setSelectedTime(timeSelected));
-          dispatch(play());
+          if (isGonnaPlayAfter === true) {
+            dispatch(play());
+          }
+          setIsGonnaPlayAfter(false);
         }}
         value={position}
         ref={rangeRef}

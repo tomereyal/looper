@@ -31,7 +31,7 @@ export const CONFIG = {
     { file: drumsAudio, name: "Drums", color: "#955251" },
     { file: stabsAudio, name: "Stabs", color: "#B565A7" },
     { file: dramaticPianoAudio, name: "Dramatic Piano", color: "#009B77" },
-    { file: musicBoxAudio, name: "Musicbox", color: "#DD4124" },
+    { file: musicBoxAudio, name: "Music Box", color: "#DD4124" },
     { file: darkPianoAudio, name: "Dark Piano", color: "#D65076" },
     { file: filteredOrchestraAudio, name: "Orchestra", color: "#45B8AC" },
     { file: simpleChordsAudio, name: "Simple Chords", color: "#5B5EA6" },

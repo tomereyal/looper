@@ -7,7 +7,18 @@ export const Container = styled.div`
   display: flex;
   position: sticky;
   bottom: 0;
-  justify-content: space-between;
+  z-index: 5;
+  ${tw`
+bg-black
+bg-opacity-40
+rounded-b-sm
+  `};
+`;
+
+export const InnerContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: ${CONFIG.layout.TIME_CONTROLLER_WIDTH_MOBILE + "%"};
   //margin-left is important for audio track to align with the slider.
   margin-left: ${100 - CONFIG.layout.TIME_CONTROLLER_WIDTH_MOBILE + "%"};
@@ -15,12 +26,7 @@ export const Container = styled.div`
     width: ${CONFIG.layout.TIME_CONTROLLER_WIDTH + "%"};
     margin-left: ${100 - CONFIG.layout.TIME_CONTROLLER_WIDTH + "%"};
   }
-
-  ${tw`
-  w-1/2
-  `}
 `;
-
 export const Timer = styled.div`
   font-size: 10px;
   font-weight: 200;
@@ -43,6 +49,18 @@ export const PlayButton = styled.div`
   border-width: 20px 0 20px 30px;
   border-color: transparent transparent transparent #ffffff;
   cursor: pointer;
+  transition: all linear 150ms;
+
+  filter: brightness(90%);
+
+  &:hover {
+    transform: scale(1.1);
+  }
+  &:active {
+    transform: scale(0.95);
+
+    filter: brightness(100%);
+  }
 `;
 export const PauseButton = styled.div`
   height: 40px;
@@ -50,17 +68,40 @@ export const PauseButton = styled.div`
   border-left: 10px solid rgb(255, 255, 255);
   border-right: 10px solid rgb(255, 255, 255);
   cursor: pointer;
+  transition: all linear 150ms;
+
+  filter: brightness(90%);
+
+  &:hover {
+    transform: scale(1.1);
+  }
+  &:active {
+    transform: scale(0.95);
+
+    filter: brightness(100%);
+  }
 `;
-export const StopButton = styled.div`
-  height: 40px;
-  width: 40px;
+export const StopButton = styled.a`
+  height: 35px;
+  width: 35px;
   margin: 0px 6px 0px auto;
-
-  background-color: white;
+  transition: all linear 200ms;
+  background-color: #fff;
+  filter: brightness(85%);
+  box-shadow: 0px 0px 0px 2px #fff;
   cursor: pointer;
+
+  &:hover {
+    filter: brightness(94%);
+    box-shadow: 0px 0px 2px 4px #fff;
+  }
+  &:active {
+    filter: brightness(94%);
+    box-shadow: 0px 0px 1px 2px #fff;
+  }
 `;
 
-export const LoopButton = styled.div<{ isLooped: boolean }>`
+export const LoopButton = styled.a<{ isLooped: boolean }>`
   height: 40px;
   width: 40px;
   display: flex;
@@ -69,4 +110,12 @@ export const LoopButton = styled.div<{ isLooped: boolean }>`
   font-size: 40px;
   color: ${({ isLooped }) => (isLooped ? "white" : "#555")};
   cursor: pointer;
+  transition: all linear 150ms;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+  &:active {
+    filter: brightness(100%);
+  }
 `;
