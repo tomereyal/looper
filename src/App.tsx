@@ -6,7 +6,8 @@ import TimeController from "./features/time-controller/TimeController";
 import PlayControllers from "./features/play-controllers/PlayControllers";
 import { CONFIG } from "./app-config";
 import AudioTrack from "./features/audio-track/AudioTrack";
-import TimeControl from "./features/time-controller/TimeControl";
+import styled from "styled-components";
+import tw from "twin.macro";
 
 function App() {
   const [percentage, setPercentage] = useState(0);
@@ -32,24 +33,37 @@ function App() {
     }
   };
 
+  const AppContainer = styled.div`
+    width: 300px;
+    min-height: max-content;
+    background-color: #272727;
+
+    padding: 15px 15px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.479);
+    /* overflow-y: auto; */
+    ${tw`
+    m-5
+  `}
+
+    @media only screen and (min-width:  ${CONFIG.screens.md}) {
+      width: 700px;
+      padding: 30px 50px;
+    }
+  `;
+
   return (
-    <div className="app-container">
+    <AppContainer>
       <TimeController
         percentage={percentage}
         onChange={onChange}
       ></TimeController>
 
-      {/* <TimeControl file={CONFIG.tracks[0]}></TimeControl> */}
       {CONFIG.tracks.map((track, index) => (
-        <AudioTrack file={track} masterTrack={index === 0 ? true : false} />
+        <AudioTrack track={track} isMasterTrack={index === 0 ? true : false} />
       ))}
-      <PlayControllers
-        play={play}
-        isPlaying={isPlaying}
-        duration={duration}
-        currentTime={currentTime}
-      ></PlayControllers>
-    </div>
+      <PlayControllers></PlayControllers>
+    </AppContainer>
   );
 }
 

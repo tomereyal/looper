@@ -2,16 +2,21 @@ import React, { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
+  pause,
+  play,
   selectIsLooped,
   selectIsPlaying,
   selectIsStopped,
+  stop,
 } from "../play-controllers/playControllersSlice";
 import {
   AudioContainer,
-  ButtonsContainer,
+  AudioName,
   Container,
+  ControlPanelContainer,
+  MuteToggleButton,
   VolumeContainer,
-} from "../../styled-components";
+} from "./styled.components.audio";
 import {
   selectPercentage,
   selectSelectedTime,
@@ -19,11 +24,12 @@ import {
   setPercentage,
 } from "../time-controller/timeControllerSlice";
 import { debounce } from "lodash";
-const formWaveSurferOptions = (ref: any) => ({
+import VolumeControl from "./VolumeControl";
+const formWaveSurferOptions = (ref: any, color: string) => ({
   container: ref,
-  waveColor: "#eee",
-  progressColor: "OrangeRed",
-  cursorColor: "OrangeRed",
+  waveColor: "#555",
+  progressColor: color,
+  cursorColor: "transparent",
   interact: false,
   barWidth: 3,
   barRadius: 3,
@@ -36,17 +42,17 @@ const formWaveSurferOptions = (ref: any) => ({
 });
 
 interface IAudioTrack {
-  file: any;
-  masterTrack: boolean; // The track that will calculate the currentTime,duration.. so forth
+  track: { file: any; color: string; name: string };
+  isMasterTrack: boolean; // The track that will calculate the currentTime,duration.. so forth
 }
 
-export default function AudioTrack({ file, masterTrack }: IAudioTrack) {
+export default function AudioTrack({ track, isMasterTrack }: IAudioTrack) {
+  const { file, color, name } = track;
   const waveformRef = useRef<HTMLDivElement | null>(null);
   const wavesurfer = useRef<WaveSurfer | null>(null);
   const isPlaying = useAppSelector(selectIsPlaying);
   const isStopped = useAppSelector(selectIsStopped);
   const isLooped = useAppSelector(selectIsLooped);
-  const percentage = useAppSelector(selectPercentage);
   const selectedTime = useAppSelector(selectSelectedTime);
   const dispatch = useAppDispatch();
   const [volume, setVolume] = useState(0.5);
@@ -54,7 +60,7 @@ export default function AudioTrack({ file, masterTrack }: IAudioTrack) {
   // create new WaveSurfer instance
   // On component mount and when url changes
   useEffect(() => {
-    const options = formWaveSurferOptions(waveformRef.current);
+    const options = formWaveSurferOptions(waveformRef.current, color);
     wavesurfer.current = WaveSurfer.create(options);
     wavesurfer.current.load(file);
     wavesurfer.current.on("ready", function () {
@@ -63,7 +69,7 @@ export default function AudioTrack({ file, masterTrack }: IAudioTrack) {
         setVolume(volume);
       }
     });
-    if (masterTrack) {
+    if (isMasterTrack) {
       //add a debouncer to make audio less laggy
       wavesurfer.current.on(
         "audioprocess",
@@ -74,7 +80,6 @@ export default function AudioTrack({ file, masterTrack }: IAudioTrack) {
             let currentTime = wavesurfer.current.getCurrentTime();
             let duration = wavesurfer.current.getDuration();
             const percent = ((currentTime / duration) * 100).toFixed(2);
-            console.log("percent", percent);
             dispatch(setPercentage(+percent));
             dispatch(setDuration(duration));
           }
@@ -97,7 +102,6 @@ export default function AudioTrack({ file, masterTrack }: IAudioTrack) {
   }, [selectedTime]);
 
   useEffect(() => {
-    console.log("audio.. isPlaying :", isPlaying);
     if (wavesurfer.current) {
       if (isPlaying) wavesurfer.current.play();
       else {
@@ -107,12 +111,15 @@ export default function AudioTrack({ file, masterTrack }: IAudioTrack) {
         } else wavesurfer.current.pause();
       }
     }
-  }, [isPlaying]);
+  }, [isPlaying, isStopped]);
 
   useEffect(() => {
     wavesurfer.current?.on("finish", function () {
       wavesurfer.current?.stop();
       if (isLooped) wavesurfer.current?.play();
+      else {
+        dispatch(pause());
+      }
     });
   }, [isLooped]);
 
@@ -124,15 +131,14 @@ export default function AudioTrack({ file, masterTrack }: IAudioTrack) {
       setMute(false);
     } else {
       wavesurfer.current?.setMute(true);
-      // wavesurfer.current?.setcursorColor("#555");
       setMute(true);
     }
   };
 
   const onVolumeChange = (e: any) => {
     const { target } = e;
-    const newVolume = +target.value;
-
+    const newVolume = +target.value / 100;
+    console.log("newVolume", newVolume);
     if (newVolume) {
       setVolume(newVolume);
       wavesurfer.current?.setVolume(newVolume || 1);
@@ -141,26 +147,21 @@ export default function AudioTrack({ file, masterTrack }: IAudioTrack) {
 
   return (
     <Container>
-      <ButtonsContainer>
-        <div>
-          <button onClick={toggleMute}>{mute ? "unmute" : "mute"}</button>
-        </div>
-        {/* <button onClick={handlePlayPause}>{!playing ? "Play" : "Pause"}</button> */}
+      <ControlPanelContainer>
+        <AudioName>{name}</AudioName>
         <VolumeContainer>
-          <input
-            type="range"
-            id="volume"
-            name="volume"
-            // waveSurfer recognize value of `0` same as `1`
-            //  so we need to set some zero-ish value for silence
-            min="0.01"
-            max="1"
-            step=".025"
+          <VolumeControl
+            percentage={volume}
             onChange={onVolumeChange}
-            defaultValue={volume}
-          />
+            mute={mute}
+          ></VolumeControl>
+
+          <MuteToggleButton onClick={toggleMute} className={mute ? "mute" : ""}>
+            <span></span>
+          </MuteToggleButton>
         </VolumeContainer>
-      </ButtonsContainer>
+      </ControlPanelContainer>
+
       <AudioContainer>
         <div id="waveform" ref={waveformRef} />
       </AudioContainer>
