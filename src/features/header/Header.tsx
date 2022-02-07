@@ -18,7 +18,9 @@ export default function Header() {
       <BPMBox>
         BPM <span>140</span>
       </BPMBox>
-      <DurationBox>Length {duration.toFixed(0)}s</DurationBox>
+      <DurationBox>
+        Length {duration.toFixed(0) === "0" ? "--" : duration.toFixed(0) + "s"}
+      </DurationBox>
     </Container>
   );
 }

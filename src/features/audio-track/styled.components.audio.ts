@@ -29,6 +29,7 @@ items-center
 text-tiny
  md:text-base
  text-gray-300
+ 
  `}
 `;
 
@@ -52,7 +53,7 @@ export const VolumeContainer = styled.div`
   items-center
   `}
   input {
-    width: 30px;
+    width: 50px;
   }
 `;
 
@@ -114,5 +115,5 @@ export const MuteToggleButton = styled.a`
   ${tw`
   mx-1
   `}
-  transform: scale(0.7);
+  transform: scale(0.9);
 `;

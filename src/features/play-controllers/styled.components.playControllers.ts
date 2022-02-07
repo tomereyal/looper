@@ -10,7 +10,7 @@ export const Container = styled.div`
   z-index: 5;
   ${tw`
 bg-black
-bg-opacity-40
+bg-opacity-60
 rounded-b-sm
   `};
 `;
@@ -47,7 +47,7 @@ export const PlayButton = styled.div`
   height: 0;
   border-style: solid;
   border-width: 20px 0 20px 30px;
-  border-color: transparent transparent transparent rgb(218, 55, 145);
+  border-color: transparent transparent transparent #3da21c;
   cursor: pointer;
   transition: all linear 150ms;
   filter: brightness(85%);
@@ -84,7 +84,7 @@ export const StopButton = styled.a`
   width: 32px;
   margin: 0px 16px 0px auto;
   transition: all linear 200ms;
-  background-color: #3da21c;
+  background-color: rgb(218, 55, 145);
   filter: brightness(85%);
   box-shadow: inset 0px 0px 1px 2px #555;
   cursor: pointer;
