@@ -3,15 +3,23 @@ import React, { useState, useEffect, useRef } from "react";
 // import "./Thumb.module.css";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { selectPercentage } from "./timeControllerSlice";
+import { pause, play } from "../play-controllers/playControllersSlice";
+import {
+  selectDuration,
+  selectPercentage,
+  setPercentage,
+  setSelectedTime,
+} from "./timeControllerSlice";
 
 const PROGRESS_BAR_HEIGHT = "4px";
-const THUMB_WIDTH = "20px";
+const THUMB_WIDTH = "10px";
 const THUMB_HEIGHT = "20px";
 
 export const SliderContainer = styled.div`
   position: relative;
-  width: 100%;
+  width: 80%;
+  //margin-left is important for audio track to align with the slider.
+  margin-left: 20%;
   &::before {
     content: "";
     background-color: white;
@@ -73,7 +81,7 @@ export const Thumb = styled.div<{ position: number; marginLeft: number }>`
   position: absolute;
   left: ${({ position }) => position + "%"};
   margin-left: ${({ marginLeft }) => marginLeft + "px"};
-  border-radius: 50%;
+  /* border-radius: 50%; */
   top: 50%;
   transform: translate(0%, -50%);
   pointer-events: none; /* Remove pointer events on thumb so user can click on the actual thumb beaneath it!  */
@@ -85,9 +93,10 @@ interface ISlider {
   onChange?: any;
 }
 
-export default function TimeController({ percentage = 0, onChange }: ISlider) {
-    const count = useAppSelector(selectPercentage);
-    const dispatch = useAppDispatch();
+export default function TimeController({ onChange }: ISlider) {
+  const percentage = useAppSelector(selectPercentage);
+  const duration = useAppSelector(selectDuration);
+  const dispatch = useAppDispatch();
 
   const [position, setPosition] = useState(0);
   const [marginLeft, setMarginLeft] = useState(0);
@@ -113,10 +122,20 @@ export default function TimeController({ percentage = 0, onChange }: ISlider) {
       <Thumb ref={thumbRef} position={position} marginLeft={marginLeft}></Thumb>
       <Range
         type="range"
+        onMouseDown={() => {
+          dispatch(pause());
+        }}
+        onMouseUp={(e: any) => {
+          const timeSelected = (duration / 100) * e.target.value;
+          dispatch(setSelectedTime(timeSelected));
+          dispatch(play());
+        }}
         value={position}
         ref={rangeRef}
         step="0.01"
-        onChange={onChange}
+        onChange={(e: any) => {
+          dispatch(setPercentage(e.target.value));
+        }}
       />
     </SliderContainer>
   );

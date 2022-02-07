@@ -1,9 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { setPercentage } from "../time-controller/timeControllerSlice";
+import { loop, selectIsLooped, selectIsPlaying } from "./playControllersSlice";
+import { play, pause, stop } from "./playControllersSlice";
 export const Container = styled.div`
   padding: 15px 0;
   display: flex;
+
   justify-content: space-between;
 `;
 
@@ -30,11 +34,30 @@ export const PlayButton = styled.div`
   border-color: transparent transparent transparent #ffffff;
   cursor: pointer;
 `;
-export const StopButton = styled.div`
+export const PauseButton = styled.div`
   height: 40px;
   width: 30px;
   border-left: 10px solid rgb(255, 255, 255);
   border-right: 10px solid rgb(255, 255, 255);
+  cursor: pointer;
+`;
+export const StopButton = styled.div`
+  height: 40px;
+  width: 40px;
+  margin: 0px 6px 0px auto;
+
+  background-color: white;
+  cursor: pointer;
+`;
+
+export const LoopButton = styled.div<{ isLooped: boolean }>`
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  color: ${({ isLooped }) => (isLooped ? "white" : "#555")};
   cursor: pointer;
 `;
 
@@ -46,11 +69,13 @@ interface IPlayControllers {
 }
 
 export default function PlayControllers({
-  play,
-  isPlaying,
   duration,
   currentTime,
 }: IPlayControllers) {
+  const isPlaying = useAppSelector(selectIsPlaying);
+  const isLooped = useAppSelector(selectIsLooped);
+  const dispatch = useAppDispatch();
+
   function secondsToHms(seconds: number) {
     if (!seconds) return "00m 00s";
 
@@ -77,16 +102,32 @@ export default function PlayControllers({
       return `${minString}m ${secString}s`;
     }
   }
+  const handlePlay = () => {
+    dispatch(play());
+  };
+  const handlePause = () => {
+    dispatch(pause());
+  };
+  const handleStop = () => {
+    dispatch(stop());
+  };
+  const handleLoop = (e: any) => {
+    dispatch(loop());
+  };
 
   return (
     <Container>
       {/* <Timer>{secondsToHms(currentTime)}</Timer> */}
       <ButtonContainer>
         {isPlaying ? (
-          <StopButton onClick={play}></StopButton>
+          <PauseButton onClick={handlePause}></PauseButton>
         ) : (
-          <PlayButton onClick={play}></PlayButton>
+          <PlayButton onClick={handlePlay}></PlayButton>
         )}
+        <StopButton onClick={handleStop}></StopButton>
+        <LoopButton onClick={handleLoop} isLooped={isLooped}>
+          &#8634;
+        </LoopButton>
       </ButtonContainer>
 
       {/* <Timer>{secondsToHms(duration)}</Timer> */}

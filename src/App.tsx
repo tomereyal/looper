@@ -3,7 +3,10 @@ import logo from "./logo.svg";
 import { Counter } from "./features/counter/Counter";
 import "./App.css";
 import TimeController from "./features/time-controller/TimeController";
-import TimeControllers from "./features/play-controllers/PlayControllers";
+import PlayControllers from "./features/play-controllers/PlayControllers";
+import { CONFIG } from "./app-config";
+import AudioTrack from "./features/audio-track/AudioTrack";
+import TimeControl from "./features/time-controller/TimeControl";
 
 function App() {
   const [percentage, setPercentage] = useState(0);
@@ -31,13 +34,21 @@ function App() {
 
   return (
     <div className="app-container">
-      <TimeController percentage={percentage} onChange={onChange}></TimeController>
-      <TimeControllers
+      <TimeController
+        percentage={percentage}
+        onChange={onChange}
+      ></TimeController>
+
+      {/* <TimeControl file={CONFIG.tracks[0]}></TimeControl> */}
+      {CONFIG.tracks.map((track, index) => (
+        <AudioTrack file={track} masterTrack={index === 0 ? true : false} />
+      ))}
+      <PlayControllers
         play={play}
         isPlaying={isPlaying}
         duration={duration}
         currentTime={currentTime}
-      ></TimeControllers>
+      ></PlayControllers>
     </div>
   );
 }

@@ -1,8 +1,10 @@
 .app-container {
   width: 600px;
+  min-height: max-content;
   padding: 0 10px;
   background-color: #272727;
   padding: 30px 50px;
   border-radius: 10px;
   box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.479);
+  overflow-y: auto;
 }
