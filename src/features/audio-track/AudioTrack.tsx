@@ -26,6 +26,7 @@ import {
 } from "../time-controller/timeControllerSlice";
 import { debounce } from "lodash";
 import VolumeControl from "./VolumeControl";
+import ReactTooltip from "react-tooltip";
 const formWaveSurferOptions = (ref: any, color: string) => ({
   container: ref,
   waveColor: "#555",
@@ -156,7 +157,11 @@ export default function AudioTrack({ track, isMasterTrack }: IAudioTrack) {
             mute={mute}
           ></VolumeControl>
 
-          <MuteToggleButton onClick={toggleMute} className={mute ? "mute" : ""}>
+          <MuteToggleButton
+            data-tip={mute ? "Unmute Track" : "Mute Track"}
+            onClick={toggleMute}
+            className={mute ? "mute" : ""}
+          >
             <span></span>
           </MuteToggleButton>
         </VolumeContainer>
@@ -165,6 +170,7 @@ export default function AudioTrack({ track, isMasterTrack }: IAudioTrack) {
       <AudioContainer>
         <div id="waveform" ref={waveformRef} />
       </AudioContainer>
+      <ReactTooltip />
     </Container>
   );
 }

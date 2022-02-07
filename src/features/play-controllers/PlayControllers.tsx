@@ -17,6 +17,7 @@ import {
   PlayButton,
   StopButton,
 } from "./styled.components.playControllers";
+import ReactTooltip from "react-tooltip";
 
 export default function PlayControllers() {
   const isPlaying = useAppSelector(selectIsPlaying);
@@ -39,14 +40,19 @@ export default function PlayControllers() {
 
   return (
     <Container>
+      <ReactTooltip />
       <InnerContainer>
         {isPlaying && !isDone ? (
-          <PauseButton onClick={handlePause}></PauseButton>
+          <PauseButton data-tip="Pause" onClick={handlePause}></PauseButton>
         ) : (
-          <PlayButton onClick={handlePlay}></PlayButton>
+          <PlayButton data-tip="Play" onClick={handlePlay}></PlayButton>
         )}
-        <StopButton onClick={handleStop}></StopButton>
-        <LoopButton onClick={handleLoop} isLooped={isLooped}>
+        <StopButton data-tip="Stop" onClick={handleStop}></StopButton>
+        <LoopButton
+          data-tip={isLooped ? "Turn Loop On" : "Turn Off Loop"}
+          onClick={handleLoop}
+          isLooped={isLooped}
+        >
           &#8634;
         </LoopButton>
       </InnerContainer>

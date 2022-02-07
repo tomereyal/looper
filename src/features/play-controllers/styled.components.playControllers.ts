@@ -47,12 +47,12 @@ export const PlayButton = styled.div`
   height: 0;
   border-style: solid;
   border-width: 20px 0 20px 30px;
-  border-color: transparent transparent transparent #ffffff;
+  border-color: transparent transparent transparent rgb(218, 55, 145);
   cursor: pointer;
   transition: all linear 150ms;
-
+  filter: brightness(85%);
   filter: brightness(90%);
-
+  border-shadow: 1px 1px 1px white;
   &:hover {
     transform: scale(1.1);
   }
@@ -65,12 +65,10 @@ export const PlayButton = styled.div`
 export const PauseButton = styled.div`
   height: 40px;
   width: 30px;
-  border-left: 10px solid rgb(255, 255, 255);
-  border-right: 10px solid rgb(255, 255, 255);
+  border-left: 10px solid white;
+  border-right: 10px solid white;
   cursor: pointer;
   transition: all linear 150ms;
-
-  filter: brightness(90%);
 
   &:hover {
     transform: scale(1.1);
@@ -82,22 +80,22 @@ export const PauseButton = styled.div`
   }
 `;
 export const StopButton = styled.a`
-  height: 35px;
-  width: 35px;
-  margin: 0px 6px 0px auto;
+  height: 32px;
+  width: 32px;
+  margin: 0px 16px 0px auto;
   transition: all linear 200ms;
-  background-color: #fff;
+  background-color: #3da21c;
   filter: brightness(85%);
-  box-shadow: 0px 0px 0px 2px #fff;
+  box-shadow: inset 0px 0px 1px 2px #555;
   cursor: pointer;
 
   &:hover {
     filter: brightness(94%);
-    box-shadow: 0px 0px 2px 4px #fff;
+    box-shadow: 0px 0px 2px 2px #3da21c;
   }
   &:active {
     filter: brightness(94%);
-    box-shadow: 0px 0px 1px 2px #fff;
+    box-shadow: inset 0px 0px 1px 2px #3da21c;
   }
 `;
 
@@ -108,6 +106,7 @@ export const LoopButton = styled.a<{ isLooped: boolean }>`
   justify-content: center;
   align-items: center;
   font-size: 40px;
+  margin-right: 10px;
   color: ${({ isLooped }) => (isLooped ? "white" : "#555")};
   cursor: pointer;
   transition: all linear 150ms;

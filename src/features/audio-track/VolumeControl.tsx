@@ -31,7 +31,7 @@ export const ProgressBarCover = styled.div<{
   progressBarWidth: number;
   isMuted: boolean;
 }>`
-  background-color: white;
+  background-color: ${({ isMuted }) => (isMuted ? "#555" : "white")};
   width: 0%;
   width: ${({ progressBarWidth }) => progressBarWidth + "px"};
   height: ${PROGRESS_BAR_HEIGHT};

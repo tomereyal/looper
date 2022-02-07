@@ -8,10 +8,22 @@ text-gray-300
 flex
 justify-around
 items-center
-pt-3
-pb-1
+py-3
 border-b border-solid border-gray-500
 `}
+`;
+
+export const Logo = styled.div`
+  background-image: url("/logo512.png");
+  width: 40px;
+  height: 40px;
+  background-color: rgb(255, 255, 255, 0.4);
+  border: white 1px solid;
+  border-radius: 50%;
+  img {
+    width: 40px;
+    height: auto;
+  }
 `;
 
 export const BPMBox = styled.div`
@@ -31,6 +43,7 @@ rounded-sm
   }
 `;
 export const DurationBox = styled.div`
+  letter-spacing: 2px;
   ${tw`
 p-2
 w-max
@@ -40,6 +53,7 @@ text-tiny
     ${tw`
     text-red-300
     font-bold
+  
     `}
   }
 `;
