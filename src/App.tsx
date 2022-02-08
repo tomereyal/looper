@@ -8,7 +8,7 @@ import styled from "styled-components";
 import tw from "twin.macro";
 import Header from "./features/header/Header";
 const AppContainer = styled.div`
-  width: 320px;
+  width: 360px;
   min-height: max-content;
   background-color: #272727;
   position: relative;

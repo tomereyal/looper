@@ -46,24 +46,29 @@ export default function TimeController() {
     setProgressBarWidth(centerProgressBar);
   }, [percentage]);
 
+  const handleDrag = () => {
+    dispatch(pause());
+    setIsGonnaPlayAfter(isPlaying);
+  };
+  const handleDrop = (e: any) => {
+    const timeSelected = (duration / 100) * e.target.value;
+    dispatch(setSelectedTime(timeSelected));
+    if (isGonnaPlayAfter === true) {
+      dispatch(play());
+    }
+    setIsGonnaPlayAfter(false);
+  };
+
   return (
     <SliderContainer>
       <ProgressBarCover progressBarWidth={progressBarWidth}></ProgressBarCover>
       <Thumb ref={thumbRef} position={position} marginLeft={marginLeft}></Thumb>
       <Range
         type="range"
-        onMouseDown={() => {
-          dispatch(pause());
-          setIsGonnaPlayAfter(isPlaying);
-        }}
-        onMouseUp={(e: any) => {
-          const timeSelected = (duration / 100) * e.target.value;
-          dispatch(setSelectedTime(timeSelected));
-          if (isGonnaPlayAfter === true) {
-            dispatch(play());
-          }
-          setIsGonnaPlayAfter(false);
-        }}
+        onMouseDown={handleDrag}
+        onTouchStart={handleDrag}
+        onMouseUp={handleDrop}
+        onTouchEnd={handleDrop}
         value={position}
         ref={rangeRef}
         step="0.01"

@@ -13,6 +13,7 @@ import {
   Container,
   InnerContainer,
   LoopButton,
+  NeomorphicButton,
   PauseButton,
   PlayButton,
   StopButton,
@@ -43,17 +44,23 @@ export default function PlayControllers() {
       <ReactTooltip />
       <InnerContainer>
         {isPlaying && !isDone ? (
-          <PauseButton data-tip="Pause" onClick={handlePause}></PauseButton>
+          <PauseButton data-tip="Pause" onClick={handlePause}>
+            <i className="fas fa-pause"></i>
+          </PauseButton>
         ) : (
-          <PlayButton data-tip="Play" onClick={handlePlay}></PlayButton>
+          <PlayButton data-tip="Play" onClick={handlePlay}>
+            <i className="fas fa-play"></i>
+          </PlayButton>
         )}
-        <StopButton data-tip="Stop" onClick={handleStop}></StopButton>
+        <StopButton data-tip="Stop" onClick={handleStop}>
+          <i className="fas fa-stop"></i>
+        </StopButton>
         <LoopButton
-          data-tip={isLooped ? "Turn Loop On" : "Turn Off Loop"}
+          data-tip={isLooped ? "Disable Looping" : "Enable Looping"}
           onClick={handleLoop}
           isLooped={isLooped}
         >
-          &#8634;
+          <i className="fas fa-undo"></i>
         </LoopButton>
       </InnerContainer>
     </Container>
