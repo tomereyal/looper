@@ -69,6 +69,7 @@ export const NeomorphicButton: any = styled.div`
 `;
 
 export const PlayButton = styled(NeomorphicButton)`
+  color: green;
   .fas {
     display: grid;
     place-items: center;
@@ -76,8 +77,11 @@ export const PlayButton = styled(NeomorphicButton)`
     color: green;
   }
 `;
-export const PauseButton = styled(NeomorphicButton)``;
+export const PauseButton = styled(NeomorphicButton)`
+  color: #555;
+`;
 export const StopButton = styled(NeomorphicButton)`
+  color: rgb(218, 55, 145);
   .fas {
     color: rgb(218, 55, 145);
   }
@@ -85,7 +89,7 @@ export const StopButton = styled(NeomorphicButton)`
 
 export const LoopButton = styled(NeomorphicButton)<{ isLooped: boolean }>`
   transition: all linear 150ms;
-
+  color: ${({ isLooped }) => (isLooped ? "#aa6c39 " : "#555")};
   .fas {
     display: grid;
     place-items: center;
